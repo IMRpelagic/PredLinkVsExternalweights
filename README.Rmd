@@ -1,0 +1,25 @@
+---
+title: "Testing out predlink on Blue Whiting"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Blue whiting
+
+```{r}
+library(stockassessment)
+load("code/model/bw/wgwide_fit.Rdata")
+load("code/model/bw/fitWithPredlink.Rdata")
+ssbplot(c("WGWIDE2021" = fit,
+          "With predlink" = fit2),
+        addCI = T)
+fbarplot(c("WGWIDE2021" = fit,
+          "With predlink" = fit2),
+        addCI = T)
+recplot(c("WGWIDE2021" = fit,
+          "With predlink" = fit2),
+        addCI = T)
+```
