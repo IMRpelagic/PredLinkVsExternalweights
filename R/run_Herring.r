@@ -73,43 +73,48 @@ save(stox_var,file = '../stox_data/herring/stox_var_herring_output.Rda')
 #-------------------------------------------------------------------------------#
 #Grab alpha/beta parameter from fit
 
-cn<-read.ices("../data/herring_assessment_data/caa.dat")
-cw<-read.ices("../data/herring_assessment_data/cw.dat")
-dw<-read.ices("../data/herring_assessment_data/dw.dat")
-lf<-read.ices("../data/herring_assessment_data/lf.dat")
-lw<-read.ices("../data/herring_assessment_data/lw.dat")
-mo<-read.ices("../data/herring_assessment_data/mo.dat")
-nm<-read.ices("../data/herring_assessment_data/nm.dat")
-pf<-read.ices("../data/herring_assessment_data/pf.dat")
-pm<-read.ices("../data/herring_assessment_data/pm.dat")
-sw<-read.ices("../data/herring_assessment_data/sw.dat")
-surveys<-read.ices("../data/herring_assessment_data/survey.dat")
+cn<-read.ices("../stox_data/herring/herring_assessment_data/caa.dat")
+cw<-read.ices("../stox_data/herring/herring_assessment_data/cw.dat")
+dw<-read.ices("../stox_data/herring/herring_assessment_data/dw.dat")
+lf<-read.ices("../stox_data/herring/herring_assessment_data/lf.dat")
+lw<-read.ices("../stox_data/herring/herring_assessment_data/lw.dat")
+mo<-read.ices("../stox_data/herring/herring_assessment_data/mo.dat")
+nm<-read.ices("../stox_data/herring/herring_assessment_data/nm.dat")
+pf<-read.ices("../stox_data/herring/herring_assessment_data/pf.dat")
+pm<-read.ices("../stox_data/herring/herring_assessment_data/pm.dat")
+sw<-read.ices("../stox_data/herring/herring_assessment_data/sw.dat")
+surveys<-read.ices("../stox_data/herring/herring_assessment_data/survey.dat")
 
 alpha <- unique(stox_var[stox_var$fleet==1,]$alpha)
 beta <- unique(stox_var[stox_var$fleet==1,]$beta)
-varC<-alpha + beta * log(cn*1000)
+cn[cn<=0]<-NA
+varC<-log(alpha) + beta * log(cn)
 varC[cn<=0]<-1
-attributes(cn)$weight = 1/(varC)
+attributes(cn)$weight = 1/exp(varC)
+attributes(cn)$weight = 1/log(exp(varC)/cn^2+1)
 
 alpha <- unique(stox_var[stox_var$fleet==2,]$alpha)
 beta <- unique(stox_var[stox_var$fleet==2,]$beta)
-varS1<-alpha + beta * log(surveys[[1]]*1000)
+varS1<-log(alpha) + beta * log(surveys[[1]]*1000)
 varS1[is.na(surveys[[1]])]<-1
-attributes(surveys[[1]])$weight = 1/(varS1)
+attributes(surveys[[1]])$weight = 1/exp(varS1)
+attributes(surveys[[1]])$weight = 1/log(exp(varS1)/surveys[[1]]^2+1)
+
 
 
 alpha <- unique(stox_var[stox_var$fleet==3,]$alpha)
 beta <- unique(stox_var[stox_var$fleet==3,]$beta)
 varS1<-t(alpha + beta * log(surveys[[2]]))
 varS1[is.na(varS1)]<-1
-attributes(surveys[[2]])$weight = 1/(varS1)
+attributes(surveys[[2]])$weight = 1/exp(varS1)
 
 
 alpha <- unique(stox_var[stox_var$fleet==4,]$alpha)
 beta <- unique(stox_var[stox_var$fleet==4,]$beta)
-varS1<-alpha + beta * log(surveys[[3]]*1000)
+varS1<-log(alpha) + beta * log(surveys[[3]]*1000)
 varS1[is.na(varS1)]<-1
-attributes(surveys[[3]])$weight = 1/(varS1)
+attributes(surveys[[3]])$weight = 1/exp(varS1)
+attributes(surveys[[3]])$weight = 1/log(exp(varS1)/surveys[[3]]^2+1)
 
 
 #-------------------------------------------------------------------------------#
@@ -136,3 +141,6 @@ par$logSdLogN = c(-0.35, -5)
 map = list(logSdLogN = as.factor(c(0,NA)))
 fit_case3 <- sam.fit(dat_case3,conf,par=par,map=map)
 save(fit_case3,file = '../code/model/herring/fit_case3.Rda')
+
+
+ssbplot(c(fit_case2,fit_case3))
