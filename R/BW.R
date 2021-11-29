@@ -2,7 +2,6 @@ rm(list= ls())
 # Blue whiting
 library(stockassessment)
 library(tidyverse)
-library(stockassessment)
 
 
 # __Case 1: OFFICIAL WGWIDE ASSESSMENT__
@@ -34,6 +33,8 @@ IBWSS <- IBWSS %>% filter(!is.na(age)) %>%
          logv  = 2*log(cv*mean),
          fleet = 2)
 
+source("R/general_plotting_function.R")
+
 # - plotting comparison external vs internal
 plot_curves(fit3, IBWSS, fleetnames = c("Catches", "IBWSS"), minage = 1, logobs =T) + ggtitle("Blue Whiting")
 ggsave("plots/BW_logobs_vs_var.pdf", width = 16/2, height = 9/2)
@@ -41,5 +42,6 @@ plot_curves(fit3, IBWSS, fleetnames = c("Catches", "IBWSS"), minage = 1, logobs 
 ggsave("plots/BW_logobs_vs_logvar.pdf", width = 16/2, height = 9/2)
 
 # - SSB, Fbar and recruitment - 
-ggSAMplot(c("WGWIDE"=fit,"PredVar"=fit2,"Best AIC"=fit3)) + ggtitle("Blue Whiting") 
+ggSAMplot(c("WGWIDE"=fit,"Simple predVar"=fit2,
+            "Best AIC"=fit3), whatToPlot = "SSB") + ggtitle("Blue Whiting") 
 ggsave("plots/BW_SSB_Fbar_rec.pdf", width = 9, height = 9)

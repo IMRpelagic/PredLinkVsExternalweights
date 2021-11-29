@@ -11,6 +11,8 @@ rm(list=ls())
 setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 
 library(ggplot2)
+library(tidyverse)
+library(stockassessment)
 
 #-------------------------------------------------------------------------------#
 #Figures
@@ -52,5 +54,22 @@ load('../code/model/herring/fit_case1.Rda')
 load('../code/model/herring/fit_case2.Rda')
 load('../code/model/herring/fit_case3.Rda')
 
+stox_var$mean[stox_var$fleet ==1] <- stox_var$mean[stox_var$fleet ==1]*1.7
+stox_var$mean[stox_var$fleet ==3] <- stox_var$mean[stox_var$fleet ==3]/1e6
+stox_var$mean[stox_var$fleet ==2] <- stox_var$mean[stox_var$fleet ==2]/1e6
+stox_var$mean[stox_var$fleet ==4] <- stox_var$mean[stox_var$fleet ==4]/1e6
+
+stox_var$v[stox_var$fleet ==1] <- stox_var$v[stox_var$fleet ==1]*(1.7)^2
+stox_var$v[stox_var$fleet ==3] <- stox_var$v[stox_var$fleet ==3]/(1e12)
+stox_var$v[stox_var$fleet %in%c(2,4)] <- stox_var$v[stox_var$fleet %in% c(2,4)]/(1e12)
+
+stox_var$logv1 <- log(stox_var$v)
 plotVar(stox_var,species='Herring')
+
+
 ssbplot(c('Case 1'=fit_case1,'Case 2'=fit_case2,'Case 3'=fit_case3))
+
+filter(stox_var, fleet ==1, age == 3, year == 2011) 
+exp(fit_case1$data$logobs[fit_case1$data$aux[,3] == 3  &fit_case1$data$aux[,2]==1 & fit_case1$data$aux[,1]==2011])
+plot(fit_case1$data$logobs, col = fit_case1$data$aux[,2])
+plot(log(stox_var$mean), col = stox_var$fleet)

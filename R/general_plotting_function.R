@@ -12,7 +12,7 @@ plot_curves <- function(fit, stox, fleetnames=NULL, minage = 1,logobs = FALSE){
       if(aconf[i,j]!=-1 & !is.na(aconf[i,j]))
         a[i,j] <- ifelse(bconf[i,j]!=-1, log(aest[aconf[i,j]+1]),log(exp(aest[aconf[i,j]+1])-1))
       if(!is.na(bconf[i,j]))
-        b[i,j] <- ifelse(bconf[i,j]!=-1, best[bconf[i,j]+1], 1)
+        b[i,j] <- ifelse(bconf[i,j]!=-1, best[bconf[i,j]+1], 2)
     }
   }
   rownames(a) <-rownames(b) <-  1:nrow(a)
