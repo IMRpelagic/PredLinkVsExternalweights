@@ -27,12 +27,15 @@ plot_curves <- function(fit, stox, fleetnames=NULL, minage = 1,logobs = FALSE){
   }
   stox <- filter(stox, !is.na(age))
   if(!logobs){
+    dt <- data.frame(ID = seq(-100,100,by=5),a = seq(-100,100,by=5),b=2)
   ggplot(stox, aes(x = logm, y = logv)) + facet_wrap( ~fleet) + geom_point()+
     geom_smooth(method = "lm")+
     geom_abline(data = df, aes(intercept = alpha, slope= beta, col = factor(agegroup)))+theme_bw() +
     scale_x_continuous(name = "Log Mean") + scale_y_continuous("Log variance")+
     scale_color_discrete("Ages") +
-    theme(strip.background = element_rect(fill = "transparent", color = "transparent"))
+    theme(strip.background = element_rect(fill = "transparent", color = "transparent"))+
+    geom_abline(data = dt,aes(intercept=a,slope=b,group=ID),colour='grey')+
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   }else{
     xx <- stox %>% group_by(fleet) %>% summarize(minlogm = min(logm), maxlogm = max(logm))
     xx2 <- data.frame()
