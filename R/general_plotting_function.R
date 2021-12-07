@@ -102,6 +102,10 @@ ggSAMplot <- function(fit, whatToPlot = c("SSB", "Fbar", "Recruitment")){
       df2 <- rbind(df2,df)
     }
     df <- transform(df2, what = factor(what, levels = c("SSB", "Fbar", "Recruitment")))
+    if(!is.null(names(fit))){
+      df <- transform(df,model = factor(model, levels = names(fit)))
+    }
+   
     return(
       ggplot(df, aes(x = year, y = mean, ymin = low, ymax= high, col = factor(model), fill = factor(model), group = model)) +
       geom_ribbon(alpha =.2) +
