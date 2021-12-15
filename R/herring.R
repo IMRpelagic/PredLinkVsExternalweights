@@ -31,25 +31,7 @@ map = list(logSdLogN = as.factor(c(0,NA)))
 fit2 <- sam.fit(dat_case2,conf,par=par,map=map)
 
 
-
-conf = loadConf(dat_case2,"../code/conf/herring/BEST_AIC_case2.cfg")
-conf$keyVarObs
-conf$predVarObsLink[1,1] <- -1
-conf$predVarObsLink[2,-1] <- 1
-conf$predVarObsLink[3,1] <- -1
-conf$predVarObsLink[4,-1] <- 2
-conf$predVarObsLink[2,2] <- -1
-conf$predVarObsLink[4,2] <- -1
-
-par<-defpar(dat_case2,conf)
-par$logSdLogN = c(-0.35, -5)
-map = list(logSdLogN = as.factor(c(0,NA)))
-#remotes::install_github("kaskr/adcomp/TMB", ref = "TMB_experimental") 
-fit3 <- sam.fit(dat_case2,conf,par=par,map=map)
-
-fit3$opt$par[which(names(fit3$opt$par)=="predVarObs")]
-
-AIC(fit1,fit2,fit3)
+AIC(fit1,fit2)
 
 
 # ---------------------
@@ -82,14 +64,27 @@ plot_curves(fit2, stox_var, fleetnames = c("Catches", "NORHERSS", "RI", "IESNS")
 ggsave("../plots/Herring_logobs_vs_var.pdf", width = 16/2, height = 7)
 
 # - SSB, Fbar and recruitment - 
-ggSAMplot(c("XSAM"=fit1, "Simple predVar"=fit2, "Best AIC"=fit3)) + 
+ggSAMplot(c("WGWIDE"=fit1, "Alternative Assessment"=fit2)) + 
   ggtitle("Norwegian Spring Spawning Herring")
 ggsave("../plots/Herring_SSB_Fbar_rec.pdf", width = 9, height = 9)
 
 
 
+res2 <- residuals(fit2)
+res1 <- residuals(fit1)
+plotResidualComp(res2,'Herring')
+ggsave("../plots/HerringRES.pdf", width = 9, height = 9)
 
 
+plotResidual(res1,res2)
+ggsave("../plots/HerringOSA.pdf", width = 9, height = 9,dpi = 300)
 
 
-
+# sim1 <- simstudy(fit1,nsim = 10)
+# sim2 <- simstudy(fit2,nsim = 10)
+# 
+# plot(sim1)
+# plot(sim2)
+# 
+# jit1<-jit(fit1)
+# jit2<-jit(fit2)

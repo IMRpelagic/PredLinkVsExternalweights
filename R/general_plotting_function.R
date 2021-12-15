@@ -118,11 +118,50 @@ ggSAMplot <- function(fit, whatToPlot = c("SSB", "Fbar", "Recruitment")){
 
 
 
-plotResidualComp <-function(fit,title = ''){
+plotResidualComp <-function(res,title = '',fleetnames = c("Catches", "NORHERSS", "RI", "IESNS")){
   
-  res <- residuals(fit)
   class(res)<-'data.frame'
-  res$fleet<-as.factor(res$fleet)
-  ggplot(res,aes(y=observation,x=observation-residual,colour=fleet))+theme_bw() +
-    geom_point()+xlab('prediction')+ geom_abline(intercept = 0, slope = 1)+ggtitle(title)
+  
+  if(!is.null(fleetnames)){
+    res$fleet <- factor(fleetnames[res$fleet], levels = fleetnames)
+  }
+  # res$fleet<-as.factor(res$fleet)
+  ggplot(res,aes(y=observation,x=observation-residual,colour=fleet))+
+    geom_point()+xlab('prediction')+ geom_abline(intercept = 0, slope = 1)+ggtitle(title)+
+    theme_bw() + theme(text = element_text(size = 20)) 
 }
+
+
+plotResidual <- function(res1,res2,fleetnames = c("Catches", "NORHERSS", "RI", "IESNS")){
+  
+  
+  resa <- res1
+  resb <- res2
+  resa$model <- 'WGWIDE'
+  resb$model <- 'Alternative'
+  
+  class(resa)<-'data.frame'
+  class(resb)<-'data.frame'
+  
+  res<-rbind(resa,resb)
+  res$colour<-'positive'
+  res$colour[res$residual<0]<-'negative'
+  res<-res[!is.na(res$observation),]
+  
+  if(!is.null(fleetnames)){
+    res$fleet <- factor(fleetnames[res$fleet], levels = fleetnames)
+  }
+  
+  
+  res <- transform(res, model = factor(model, levels = c("WGWIDE", "Alternative")))
+  res <- transform(res, colour = factor(colour, levels = c("positive", "negative")))
+  
+  ggplot(res,aes(x=year,y=age,size=abs(residual),colour=colour))+
+    facet_grid(fleet~model)+geom_point(alpha=0.5)+theme_bw() + 
+    theme(strip.background = element_rect(fill = "transparent", color = "transparent"),panel.grid = element_blank())+
+    scale_x_continuous("Year") + scale_y_continuous("Age", breaks = 1:12)+
+    scale_size_continuous("Absolute value",range=c(0,8)) +
+    scale_color_discrete(name = "Sign")
+  
+}
+
