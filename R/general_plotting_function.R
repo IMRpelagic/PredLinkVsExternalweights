@@ -10,7 +10,7 @@ plot_curves <- function(fit, stox, fleetnames=NULL, minage = 1,logobs = FALSE){
   for(i in 1:nrow(a)){
     for(j in 1:ncol(a)){
       if(aconf[i,j]!=-1 & !is.na(aconf[i,j]))
-        a[i,j] <- ifelse(bconf[i,j]!=-1, log(aest[aconf[i,j]+1]),log(exp(aest[aconf[i,j]+1])-1))
+        a[i,j] <- ifelse(bconf[i,j]!=-1, log(aest[aconf[i,j]+1]),log(exp(aest[aconf[i,j]+1]^2)-1))
       if(!is.na(bconf[i,j]))
         b[i,j] <- ifelse(bconf[i,j]!=-1, best[bconf[i,j]+1], 2)
     }
@@ -116,3 +116,13 @@ ggSAMplot <- function(fit, whatToPlot = c("SSB", "Fbar", "Recruitment")){
   }
 }
 
+
+
+plotResidualComp <-function(fit,title = ''){
+  
+  res <- residuals(fit)
+    class(res)<-'data.frame'
+    res$fleet<-as.factor(res$fleet)
+    ggplot(res,aes(y=observation,x=observation-residual,colour=fleet))+theme_bw() +
+      geom_point()+xlab('prediction')+ geom_abline(intercept = 0, slope = 1)+ggtitle(title)
+  }
