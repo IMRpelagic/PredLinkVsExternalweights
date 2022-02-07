@@ -20,7 +20,13 @@ plot_curves <- function(fit, stox, fleetnames=NULL, minage = 1,logobs = FALSE){
   df <- left_join(reshape2::melt(a) %>% rename("fleet" = Var1, age = Var2, alpha = value) ,
                   reshape2::melt(b) %>% rename("fleet" = Var1, age = Var2, beta = value) %>% mutate(beta = beta),
                   by = c("fleet","age")) %>% mutate(age = minage-1+age) %>%
-    filter(!is.na(beta)) %>% group_by(fleet,alpha,beta) %>% summarize(agegroup = ifelse(min(age)==max(age), paste0(min(age)),paste0(min(age),"-",max(age))))
+    filter(!is.na(beta)) 
+  df <- df %>% group_by(fleet,alpha,beta) %>% 
+    summarize(agegroup = ifelse(min(age)==max(age),
+                                paste0(min(age)),
+                                ifelse(max(age)== max(df$age) & fit$conf$maxAgePlusGroup== 1, 
+                                       paste0(min(age),"-",max(age), "+"),
+                                paste0(min(age),"-",max(age)))))
   if(!is.null(fleetnames)){
     stox$fleet <- factor(fleetnames[as.integer(stox$fleet)], levels = fleetnames)
     df$fleet <- factor(fleetnames[df$fleet], levels = fleetnames)
@@ -29,7 +35,7 @@ plot_curves <- function(fit, stox, fleetnames=NULL, minage = 1,logobs = FALSE){
   if(!logobs){
     dt <- data.frame(ID = seq(-100,100,by=5),a = seq(-100,100,by=5),b=2)
     ggplot(stox, aes(x = logm, y = logv)) + facet_wrap( ~fleet) + geom_point()+
-      geom_smooth(method = "lm")+
+      geom_smooth(method = "lm", se = FALSE)+
       geom_abline(data = df, aes(intercept = alpha, slope= beta, col = factor(agegroup)))+theme_bw() +
       scale_x_continuous(name = "Log Mean") + scale_y_continuous("Log variance")+
       scale_color_discrete("Ages") +

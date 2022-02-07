@@ -38,9 +38,9 @@ lm(logv~logm,data = IBWSS[IBWSS$fleet==2,])
 source("../R/general_plotting_function.R")
 
 # - plotting comparison external vs internal
-plot_curves(fit2, IBWSS, fleetnames = c("Catches", "IBWSS"), minage = 1, logobs =T) + ggtitle("Blue Whiting")
+plot_curves(fit2, IBWSS, fleetnames = c("Catch at age", "IBWSS"), minage = 1, logobs =T) + ggtitle("Blue Whiting")
 ggsave("../plots/BW_logobs_vs_var.pdf", width = 16/2, height = 9/2)
-plot_curves(fit2, IBWSS, fleetnames = c("Catches", "IBWSS"), minage = 1, logobs =F) + ggtitle("Blue Whiting")
+plot_curves(fit2, IBWSS, fleetnames = c("Catch at age", "IBWSS"), minage = 1, logobs =F) + ggtitle("Blue Whiting")
 ggsave("../plots/BW_logobs_vs_logvar.pdf", width = 16/2, height = 9/2)
 
 # - SSB, Fbar and recruitment - 
