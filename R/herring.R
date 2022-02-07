@@ -56,10 +56,10 @@ lm(logv~logm,data = stox_var[stox_var$fleet==4,])
 
 
 # - plotting comparison external vs internal
-plot_curves(fit2, stox_var, fleetnames = c("Catches", "NORHERSS", "RI", "IESNS"), minage = 2, logobs =F) +
+plot_curves(fit2, stox_var, fleetnames = c("Catch at age", "NORHERSS", "RI", "IESNS"), minage = 2, logobs =F) +
   ggtitle("Norwegian Spring Spawning Herring")
 ggsave("../plots/Herring_logobs_vs_logvar.pdf", width = 16/2, height = 7)
-plot_curves(fit2, stox_var, fleetnames = c("Catches", "NORHERSS", "RI", "IESNS"), minage = 2, logobs =T) + 
+plot_curves(fit2, stox_var, fleetnames = c("Catch at age", "NORHERSS", "RI", "IESNS"), minage = 2, logobs =T) + 
   ggtitle("Norwegian Spring Spawning Herring")#+theme(legend.position = "top")
 ggsave("../plots/Herring_logobs_vs_var.pdf", width = 16/2, height = 7)
 
