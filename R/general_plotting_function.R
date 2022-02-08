@@ -132,9 +132,12 @@ plotResidualComp <-function(res,title = '',fleetnames = c("Catch at age", "NORHE
     res$fleet <- factor(fleetnames[res$fleet], levels = fleetnames)
   }
   # res$fleet<-as.factor(res$fleet)
-  ggplot(res,aes(y=observation,x=observation-residual,colour=fleet))+
-    geom_point()+xlab('prediction')+ geom_abline(intercept = 0, slope = 1)+ggtitle(title)+
-    theme_bw() + theme(text = element_text(size = 20)) 
+  ggplot(res,aes(y=observation,x=observation-residual,colour=fleet)) +
+    geom_point()+xlab('Prediction')+ylab("Observation") +geom_abline(intercept = 0, slope = 1) +
+    ggtitle(title) +
+    theme_bw() + theme(text = element_text(size = 20),
+                       legend.title = element_blank(),
+                       legend.position = "top")  
 }
 
 
