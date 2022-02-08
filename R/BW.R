@@ -51,11 +51,11 @@ ggsave("../plots/BW_SSB_Fbar_rec.pdf", width = 9, height = 9)
 
 res2 <- residuals(fit2)
 res1 <- residuals(fit)
-plotResidualComp(res2,'Blue Whiting',fleetnames = c("Catches", "IBWSS"))
+plotResidualComp(res2,'Blue Whiting',fleetnames = c("Catch at age", "IBWSS"))
 ggsave("../plots/BWRES.pdf", width = 9, height = 9)
 
 
-plotResidual(res1,res2,fleetnames = c("Catches", "IBWSS"))
+plotResidual(res1,res2,fleetnames = c("Catch at age", "IBWSS"))
 ggsave("../plots/BWOSA.pdf", width = 9, height = 9,dpi = 300)
 
 
