@@ -124,7 +124,7 @@ ggSAMplot <- function(fit, whatToPlot = c("SSB", "Fbar", "Recruitment")){
 
 
 
-plotResidualComp <-function(res,title = '',fleetnames = c("Catches", "NORHERSS", "RI", "IESNS")){
+plotResidualComp <-function(res,title = '',fleetnames = c("Catch at age", "NORHERSS", "RI", "IESNS")){
   
   class(res)<-'data.frame'
   
@@ -138,7 +138,7 @@ plotResidualComp <-function(res,title = '',fleetnames = c("Catches", "NORHERSS",
 }
 
 
-plotResidual <- function(res1,res2,fleetnames = c("Catches", "NORHERSS", "RI", "IESNS")){
+plotResidual <- function(res1,res2,fleetnames = c("Catch at age", "NORHERSS", "RI", "IESNS")){
   
   
   resa <- res1
