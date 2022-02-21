@@ -1,4 +1,6 @@
+# clean slate
 rm(list=ls())
+
 # Herring
 library(stockassessment)
 library(tidyverse)
