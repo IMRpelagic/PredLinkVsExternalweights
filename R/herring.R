@@ -65,7 +65,7 @@ ggsave("../plots/Herring_logobs_vs_var.pdf", width = 16/2, height = 7)
 
 # - SSB, Fbar and recruitment - 
 ggSAMplot(c("WGWIDE"=fit1, "Alternative Assessment"=fit2)) + 
-  ggtitle("Norwegian Spring Spawning Herring")
+  ggtitle("Norwegian Spring Spawning Herring") + theme(text = element_text(size = 16))
 ggsave("../plots/Herring_SSB_Fbar_rec.pdf", width = 9, height = 9)
 
 

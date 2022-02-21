@@ -1,31 +1,19 @@
-Testing out predlink on Blue Whiting
+Validation of prediction–variance relation in a state-space fish stock
+assessment model
 ================
 
-## Blue whiting
+*Sindre Vatnehol<sup>1</sup> and Sondre Hølleland<sup>1,2</sup>*
 
-``` r
-library(stockassessment)
-load("code/model/bw/wgwide_fit.Rdata")
-load("code/model/bw/fitWithPredlink.Rdata")
-ssbplot(c("WGWIDE2021" = fit,
-          "With predlink" = fit2),
-        addCI = T)
-```
+*<sup>1</sup> Institute of Marine Research, Pelagic Fish, Postbox 1870
+Nordnes, 5817 Bergen, Norway*
 
-![](README_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+*<sup>2</sup> Department of Business and Management Science, Norwegian
+School of Economics, Helleveien 30, 5045 Bergen, Norway.*
 
-``` r
-fbarplot(c("WGWIDE2021" = fit,
-          "With predlink" = fit2),
-        addCI = T)
-```
+*Paper can be found [here](https://www.hi.no) (link will come)*
 
-![](README_files/figure-gfm/unnamed-chunk-1-2.png)<!-- -->
+To reproduce the results, run
 
-``` r
-recplot(c("WGWIDE2021" = fit,
-          "With predlink" = fit2),
-        addCI = T)
-```
+1.  *R/herring.R* for the herring case study,
 
-![](README_files/figure-gfm/unnamed-chunk-1-3.png)<!-- -->
+2.  *R/BW.R* for the blue whiting case study.

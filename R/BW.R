@@ -44,7 +44,7 @@ plot_curves(fit2, IBWSS, fleetnames = c("Catch at age", "IBWSS"), minage = 1, lo
 ggsave("../plots/BW_logobs_vs_logvar.pdf", width = 16/2, height = 9/2)
 
 # - SSB, Fbar and recruitment - 
-ggSAMplot(c("WGWIDE"=fit,"Alternativ Assessment"=fit2), whatToPlot = "SSB") + ggtitle("Blue Whiting") 
+ggSAMplot(c("WGWIDE"=fit,"Alternativ Assessment"=fit2)) + ggtitle("Blue Whiting") + theme(text = element_text(size = 16))
 ggsave("../plots/BW_SSB_Fbar_rec.pdf", width = 9, height = 9)
 
 
